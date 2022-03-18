@@ -83,6 +83,36 @@ router.post(
     if (facebook) profileFields.social.facebook = facebook;
     if (linkedin) profileFields.social.linkedin = linkedin;
     if (instagram) profileFields.social.instagram = instagram;
+    profileFields.social = {};
+    if (youtube) {
+      if (youtube.includes("http://") || youtube.includes("https://"))
+        profileFields.social.youtube = youtube;
+      else profileFields.social.youtube = `http://${youtube}`;
+    }
+    profileFields.social = {};
+    if (facebook) {
+      if (facebook.includes("http://") || facebook.includes("https://"))
+        profileFields.social.facebook = facebook;
+      else profileFields.social.facebook = `http://${facebook}`;
+    }
+    profileFields.social = {};
+    if (twitter) {
+      if (twitter.includes("http://") || twitter.includes("https://"))
+        profileFields.social.twitter = twitter;
+      else profileFields.social.twitter = `http://${twitter}`;
+    }
+    profileFields.social = {};
+    if (linkedin) {
+      if (linkedin.includes("http://") || linkedin.includes("https://"))
+        profileFields.social.linkedin = linkedin;
+      else profileFields.social.linkedin = `http://${linkedin}`;
+    }
+    profileFields.social = {};
+    if (instagram) {
+      if (instagram.includes("http://") || instagram.includes("https://"))
+        profileFields.social.instagram = instagram;
+      else profileFields.social.instagram = `http://${instagram}`;
+    }
 
     try {
       let profile = await Profile.findOne({ user: req.user.id });
