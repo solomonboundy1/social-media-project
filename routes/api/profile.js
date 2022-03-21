@@ -331,13 +331,19 @@ router.delete("/education/:edu_id", auth, async (req, res) => {
 // @access  Public
 const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 const clientId = process.env.GITHUB_CLIENT_ID;
+const personalAccessToken = process.env.PERSONAL_ACCESS_TOKEN;
 
 router.get("/github/:username", (req, res) => {
   try {
     const options = {
-      uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${clientId}&client_secret=${clientSecret}`,
+      uri: encodeURI(
+        `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
+      ),
       method: "GET",
-      headers: { "user-agent": "node.js" },
+      headers: {
+        "user-agent": "node.js",
+        Authorization: `token ${personalAccessToken}`,
+      },
     };
 
     request(options, (error, response, body) => {
