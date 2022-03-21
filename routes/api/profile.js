@@ -83,6 +83,31 @@ router.post(
     if (facebook) profileFields.social.facebook = facebook;
     if (linkedin) profileFields.social.linkedin = linkedin;
     if (instagram) profileFields.social.instagram = instagram;
+    if (youtube) {
+      if (youtube.includes("http://") || youtube.includes("https://"))
+        profileFields.social.youtube = youtube;
+      else profileFields.social.youtube = `http://${youtube}`;
+    }
+    if (facebook) {
+      if (facebook.includes("http://") || facebook.includes("https://"))
+        profileFields.social.facebook = facebook;
+      else profileFields.social.facebook = `http://${facebook}`;
+    }
+    if (twitter) {
+      if (twitter.includes("http://") || twitter.includes("https://"))
+        profileFields.social.twitter = twitter;
+      else profileFields.social.twitter = `http://${twitter}`;
+    }
+    if (linkedin) {
+      if (linkedin.includes("http://") || linkedin.includes("https://"))
+        profileFields.social.linkedin = linkedin;
+      else profileFields.social.linkedin = `http://${linkedin}`;
+    }
+    if (instagram) {
+      if (instagram.includes("http://") || instagram.includes("https://"))
+        profileFields.social.instagram = instagram;
+      else profileFields.social.instagram = `http://${instagram}`;
+    }
 
     try {
       let profile = await Profile.findOne({ user: req.user.id });
@@ -306,13 +331,19 @@ router.delete("/education/:edu_id", auth, async (req, res) => {
 // @access  Public
 const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 const clientId = process.env.GITHUB_CLIENT_ID;
+const personalAccessToken = process.env.PERSONAL_ACCESS_TOKEN;
 
 router.get("/github/:username", (req, res) => {
   try {
     const options = {
-      uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${clientId}&client_secret=${clientSecret}`,
+      uri: encodeURI(
+        `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
+      ),
       method: "GET",
-      headers: { "user-agent": "node.js" },
+      headers: {
+        "user-agent": "node.js",
+        Authorization: `token ${personalAccessToken}`,
+      },
     };
 
     request(options, (error, response, body) => {
